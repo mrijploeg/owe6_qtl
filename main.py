@@ -106,7 +106,7 @@ def calc_chi(dictionary):
             delete.append(gene)
             print("!!! DELETED GENE: " + gene + " BECAUSE P < " +
                   str(chi_squared) + " !!!")
-    
+
     # Write the results to a file.
     with open("chi_results.txt", "w") as chi_open:
         for gene, chi in gene_chi.items():
@@ -176,7 +176,7 @@ def calc_rf(dictionary):
                     rf_dictionary[all_genes[i] + " + " +
                                   all_genes[k+1]] = \
                         [aa_perc, ab_perc, bb_perc]
-    
+
     # Write the results to a file.
     with open("rf_pairwise.txt", "w") as rf_open:
         rf_open.write("GENE + GENE: [aa%, ab%, bb%]\n\n")
@@ -185,6 +185,41 @@ def calc_rf(dictionary):
 
     # Return the dictionary.
     return rf_dictionary
+
+
+def create_csv(dictionary):
+    """ Creates a CSV-file with all the markers per plant and the
+    genes the markers correspond to.
+
+    :param dictionary: dictionary - contains a gene name as the key
+    and markers in a list as the value
+    """
+    # Define the variables.
+    plants = {}
+    genes = ["plant"]
+    all_markers = []
+
+    # Add all the genes and markers to seperate lists.
+    for gene, markers in dictionary.items():
+        genes.append(gene)
+        all_markers.append(markers)
+
+    # Get the markers per plant, creating lists which can later
+    # be used to create a table in CSV-format.
+    for i in range(162):
+        plant = [str(i + 1)]
+        for k in range(len(all_markers)):
+            plant.append(all_markers[k][i])
+        if "-" not in plant:
+            plants[i] = plant
+    
+    # Write the data to a CSV-file.
+    with open("plants.txt", "w") as plants_open:
+        plants_open.write(",".join(genes))
+        plants_open.write("\n")
+        for key, value in plants.items():
+            plants_open.write(",".join(value))
+            plants_open.write("\n")
 
 
 if __name__ == '__main__':
@@ -199,6 +234,9 @@ if __name__ == '__main__':
     print("*** CHI-SQUARE TEST IN PROGRESS ***")
     gene_markers = calc_chi(gene_markers)
     print("*** GENES LEFT: " + str(len(gene_markers)) + " GENES ***")
+
+    print("*** CREATING CSV-FILE ***")
+    create_csv(gene_markers)
 
     print("*** CALCULATING RECOMBINATION FREQUENCIES ***")
     recombination_freqs = calc_rf(gene_markers)
