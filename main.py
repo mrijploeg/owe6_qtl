@@ -85,6 +85,7 @@ def calc_chi(dictionary):
     :return:
     """
     # Define the variables.
+    gene_chi = {}
     p_value = 3.841
     delete = []
 
@@ -100,10 +101,19 @@ def calc_chi(dictionary):
         b = markers.count("b")
         chi_squared = round(((a - expected) ** 2 / expected) +
                             ((b - expected) ** 2 / expected), 3)
+        gene_chi[gene] = chi_squared
         if p_value < chi_squared:
             delete.append(gene)
             print("!!! DELETED GENE: " + gene + " BECAUSE P < " +
                   str(chi_squared) + " !!!")
+    
+    # Write the results to a file.
+    with open("chi_results.txt", "w") as chi_open:
+        for gene, chi in gene_chi.items():
+            if gene not in delete:
+                chi_open.write(gene + ": " + str(chi) + "\n")
+            else:
+                chi_open.write(gene + ": " + str(chi) + " *\n")
 
     # Delete the genes that have markers that cannot be trusted.
     for gene in delete:
@@ -126,7 +136,6 @@ def calc_rf(dictionary):
     rf_dictionary = {}
     all_genes = []
     all_markers = []
-    counter = 0
 
     # Add all the genes and markers to seperate lists.
     for gene, markers in dictionary.items():
@@ -167,6 +176,12 @@ def calc_rf(dictionary):
                     rf_dictionary[all_genes[i] + " + " +
                                   all_genes[k+1]] = \
                         [aa_perc, ab_perc, bb_perc]
+    
+    # Write the results to a file.
+    with open("rf_pairwise.txt", "w") as rf_open:
+        rf_open.write("GENE + GENE: [aa%, ab%, bb%]\n\n")
+        for genes, freqs in rf_dictionary.items():
+            rf_open.write(genes + ": " + str(freqs) + "\n")
 
     # Return the dictionary.
     return rf_dictionary
