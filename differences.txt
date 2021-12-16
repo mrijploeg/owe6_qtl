@@ -1,0 +1,22 @@
+New gene:
+a a b a a b b b b b a b a a b a b a a b a b a b b b b b a a a b a a a a a a b b a a a a a b a b b a a a b b b b a b a a
+b a b b a b a b a b a a a b b b b b b a a b b a b a a a a b a a a a b b a a a b b b b a a b a b a b b a a a a b a a a a
+b b b a a a b b b b b b b b b b b b b b b b b a b b a b b b a b b b b a b
+
+BH.106L: 62
+CH.160L: 63
+AD.106L: 64
+AXR-1: 65
+GB.112L: 66
+AD.121C: 67
+DF.93C: 68
+DF.85C: 68
+GD.97L: 69
+CD.108L: 70
+BH.147L: 73
+PVV4: 74
+CRY2: 74
+DF.162L: 74
+EC.480C: 74
+HH.335C: 75
+FD.59C: 78
